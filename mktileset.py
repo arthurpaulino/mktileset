@@ -22,22 +22,25 @@ def q(s):
     return "\"" + s + "\""
 
 file_name = sys.argv[1]
+tile_size = int(sys.argv[2])
+
 w, h = get_png_image_size(file_name)
-if w != 96 or h % 32 != 0:
-    print("invalid img size")
+if w != tile_size * 12 or h % (tile_size * 4) != 0:
+    print("invalid img or tile size")
     exit()
 root_name = file_name.split(".")[0]
 tres_name = root_name + ".tres"
 write(tres_name, "[gd_resource type=" + q("TileSet") + " load_steps=3 format=2]\n", True)
 write(tres_name, "[ext_resource path=" + q("res://" + file_name) + " type=" + q("Texture") + " id=1]\n\n\n")
 write(tres_name, "[sub_resource type=" + q("ConvexPolygonShape2D") +" id=1]")
-write(tres_name, "points = PoolVector2Array( 0, 0, 8, 0, 8, 8, 0, 8 )\n")
+write(tres_name, "points = PoolVector2Array( 0, 0, " +\
+str(tile_size) + ", 0, " + str(tile_size) + ", " + str(tile_size) + ", 0, " + str(tile_size) + " )\n")
 write(tres_name, "[resource]")
 write(tres_name, "0/name = " + q("autotile"))
 write(tres_name, "0/texture = ExtResource( 1 )\n\
 0/tex_offset = Vector2( 0, 0 )\n\
 0/modulate = Color( 1, 1, 1, 1 )\n\
-0/region = Rect2( 0, 0, 96, 32 )\n\
+0/region = Rect2( 0, 0, " + str(w) + ", " + str(h) + " )\n\
 0/tile_mode = 1\n\
 0/autotile/bitmask_mode = 1")
 
@@ -54,7 +57,7 @@ def get_bitmask_flags(i):
 
 all_bitmask_flags = ""
 
-for i_tileset in range(h // 32):
+for i_tileset in range(h // (tile_size * 4)):
     if i_tileset > 0:
         all_bitmask_flags += ", "
     all_bitmask_flags += get_bitmask_flags(i_tileset)
@@ -67,7 +70,7 @@ write(tres_name, "0/autotile/bitmask_flags = " + all_bitmask_flags)
 
 
 write(tres_name, "0/autotile/icon_coordinate = Vector2( 0, 3 )\n\
-0/autotile/tile_size = Vector2( 8, 8 )\n\
+0/autotile/tile_size = Vector2( " + str(tile_size) + ", " + str(tile_size) + " )\n\
 0/autotile/spacing = 0\n\
 0/autotile/occluder_map = [  ]\n\
 0/autotile/navpoly_map = [  ]\n\
@@ -91,7 +94,7 @@ collision_tuples = [
 all_shapes = ""
 
 
-for i_tileset in range(h // 32):
+for i_tileset in range(h // (tile_size * 4)):
     for idx, t in enumerate(collision_tuples):
         if i_tileset + idx > 0:
             all_shapes += ", "

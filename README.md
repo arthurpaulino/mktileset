@@ -16,9 +16,10 @@ Example: [`simple.png`](simple.png)
 
 ![simple](simple.png)
 
-Now, on the terminal:
+Now, on the terminal, call your Python 3 interpreter to run `mktileset.py` passing the file name and the
+tile size (in pixels) as parameters.
 
-`$ python mktileset.py simple.png`
+`$ python mktileset.py simple.png 8`
 
 It will output the `tres` file [`simple.tres`](simple.tres) that you can use on a `TileMap` node.
 You will then be able to use a tile called `autotile` which is ready for... autotiling.
@@ -34,9 +35,13 @@ Example: [`multiple.png`](multiple.png)
 
 Now, on the terminal:
 
-`$ python mktileset.py multiple.png`
+`$ python mktileset.py multiple.png 8`
 
 It will output the `tres` file [`multiple.tres`](multiple.tres). When you use it for autotiling, each cell
 will be chosen randomly from the three possibilities on the image. Yeah, it does the math by itself and is
 able to recognize three tilesets on the same file.
+
+In Godot:
+
+![godot_screenshot](godot_screenshot.png)
 
